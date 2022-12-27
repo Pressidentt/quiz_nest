@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>App</title>
+</head>
+
+<body>
+    <!--wtite template for quiz -->
+    <h1>Quiz</h1>
+    <form action="/quiz" method="Post">
+        <label>
+            {{firstQuestion}}
+            <input type="radio" name="question1" value="Delhi" /> Delhi
+            <input type="radio" name="question1" value="Mumbai" /> Mumbai
+            <input type="radio" name="question1" value="Kolkata" /> Kolkata
+            <input type="radio" name="question1" value="Chennai" /> Chennai
+            <br>
+        </label>
+        <label>What is the capital of USA?
+            <input type="radio" name="question2" value="New York" /> New York
+            <input type="radio" name="question2" value="Washington" /> Washington
+            <input type="radio" name="question2" value="Los Angeles" /> Los Angeles
+            <input type="radio" name="question2" value="Chicago" /> Chicago
+        </label>
+        <br>
+        <label>What is the capital of Australia?
+            <input type="radio" name="question3" value="Sydney" /> Sydney
+            <input type="radio" name="question3" value="Melbourne" /> Melbourne
+            <input type="radio" name="question3" value="Brisbane" /> Brisbane
+            <input type="radio" name="question3" value="Perth" /> Perth
+        </label>
+        <br>
+        <!--send data from quiz to database-->
+        <button type="submit">Submit</button>
+    </form>
+    <!--write template for result -->
+    <h1>Result</h1>
+    {{ message }}
+</body>
+
+</html>
