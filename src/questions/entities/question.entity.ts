@@ -7,12 +7,8 @@ export class Question {
   id: number;
 
   @Column({type: 'varchar', nullable: false })
-  question: string;
-
-  @Column({type: 'boolean', nullable: true})
-  isCorrect: boolean;
+  text: string;
 
   @OneToMany(() => Answer, answer => answer.questionId)
   answers: Answer[];
-  
 }
