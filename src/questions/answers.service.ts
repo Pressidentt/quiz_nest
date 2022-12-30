@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateAnswerDto } from './dto/create-answer.dto';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 import { Answer } from './entities/answer.entity';
@@ -13,7 +14,7 @@ export class AnswersService{
     private questionRepository: Repository<Answer>,
   ) {}
 
-  async create(createQuestionDto: CreateQuestionDto) {
+  async create(createQuestionDto: CreateAnswerDto) {
     return await this.questionRepository.save(createQuestionDto);
   }
 
@@ -27,7 +28,7 @@ export class AnswersService{
     });
   }
 
-  async update(id: number, updateQuestionDto: UpdateQuestionDto) {
+  async update(id: number, updateQuestionDto: CreateAnswerDto) {
     const question = await this.questionRepository.findOne({
       where: { id },
     });

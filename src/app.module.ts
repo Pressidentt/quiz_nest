@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PrimaryColumnCannotBeNullableError } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { Answer } from './questions/entities/answer.entity';
+import { Question } from './questions/entities/question.entity';
 import { QuestionsModule } from './questions/questions.module';
 
 @Module({
@@ -14,7 +15,7 @@ import { QuestionsModule } from './questions/questions.module';
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
-      entities: [],
+      entities: [Answer, Question],
       synchronize: true,
     }),],
   controllers: [AppController],

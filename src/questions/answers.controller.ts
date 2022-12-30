@@ -1,35 +1,36 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { QuestionsService } from './questions.service';
-import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
+import { CreateAnswerDto } from './dto/create-answer.dto';
+import { AnswersService } from './answers.service';
 
-@Controller('questions')
-export class QuestionsController {
-  constructor(private readonly questionsService: QuestionsService) {}
+@Controller('answers')
+export class AnswersController{
+  constructor(private readonly answersService: AnswersService) {}
 
   @Post()
-  async create(@Body() createQuestionDto: CreateQuestionDto) {
-    return await this.questionsService.create(createQuestionDto);
+  async create(@Body() createQuestionDto: CreateAnswerDto) {
+    return await this.answersService.create(createQuestionDto);
   }
 
   @Get()
   async findAll() {
-    return this.questionsService.findAll();
+    return this.answersService.findAll();
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.questionsService.findOne(+id);
+    return await this.answersService.findOne(+id);
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateQuestionDto: UpdateQuestionDto) {
-    return await this.questionsService.update(+id, updateQuestionDto);
+  async update(@Param('id') id: string, @Body() updateQuestionDto: CreateAnswerDto) {
+    return await this.answersService.update(+id, updateQuestionDto);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return await this.questionsService.remove(+id);
+    return await this.answersService.remove(+id);
   }
 
 }
