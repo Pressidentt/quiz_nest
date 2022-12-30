@@ -10,9 +10,8 @@ import { Question } from './entities/question.entity';
 @Injectable()
 export class QuestionsService {
   constructor(
-    @InjectRepository(Question)
-    private questionRepository: Repository<Question>,
-    private answerRepository: Repository<Answer>,
+    @InjectRepository(Question) private questionRepository: Repository<Question>,
+    @InjectRepository(Answer) private answerRepository: Repository<Answer>,
     private readonly dataSource: DataSource
   ) { }
 
