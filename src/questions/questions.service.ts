@@ -1,6 +1,8 @@
+import { AnswersService } from './answers.service';
+import { Answer } from './entities/answer.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 import { Question } from './entities/question.entity';
@@ -10,7 +12,9 @@ export class QuestionsService {
   constructor(
     @InjectRepository(Question)
     private questionRepository: Repository<Question>,
-  ) {}
+    private answerRepository: Repository<Answer>,
+    private readonly dataSource: DataSource
+  ) { }
 
   async create(createQuestionDto: CreateQuestionDto) {
     return await this.questionRepository.save(createQuestionDto);
@@ -40,5 +44,25 @@ export class QuestionsService {
       where: { id },
     });
     return await this.questionRepository.remove(question);
+  }
+
+  async questionMassInsert(data: any) {
+   let questionToSave = this.questionRepository.create({
+    text: data.text,
+   });  
+   await this.questionRepository.save(questionToSave);
+   const questionId = questionToSave.id; 
+   const answers: Answer[] = []
+   const answersFromUser = data.answers;
+   for(let i = 0; i< answersFromUser.length; i++){
+    answers.push(
+      this.answerRepository.create({
+      text: data.answers[i].text,
+      isCorrect: data.answers[i].isCorrect,
+      questionId: questionId
+      })
+    );
+   }
+   return await this.dataSource.manager.save(answers);
   }
 }

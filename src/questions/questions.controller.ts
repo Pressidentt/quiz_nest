@@ -5,7 +5,7 @@ import { UpdateQuestionDto } from './dto/update-question.dto';
 
 @Controller('questions')
 export class QuestionsController {
-  constructor(private readonly questionsService: QuestionsService) {}
+  constructor(private readonly questionsService: QuestionsService) { }
 
   @Post()
   async create(@Body() createQuestionDto: CreateQuestionDto) {
@@ -32,4 +32,13 @@ export class QuestionsController {
     return await this.questionsService.remove(+id);
   }
 
+  @Post('massInsert')
+  async questionMassInsert(@Body() data: any) {
+    return await this.questionsService.questionMassInsert(data);
+  }
+
+  @Get('checkMethod')
+  async checkMethod() {
+    return 'checkMethod';
+  }
 }
