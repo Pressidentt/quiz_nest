@@ -9,6 +9,12 @@ export class Question {
   @Column({type: 'varchar', nullable: false })
   text: string;
 
+  @Column({type: 'varchar', nullable: true})
+  feedback: string;
+
+  @Column({type: 'bigint', nullable: true})
+  score: number;
+
   @OneToMany(() => Answer, answer => answer.questionId)
   answers: Answer[];
 }
