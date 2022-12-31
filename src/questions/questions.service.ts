@@ -22,7 +22,9 @@ export class QuestionsService {
   async findAll() {
     return await this.questionRepository.find(
       {
-        relations: ['answers']
+        relations: {
+          answers: true
+        }
       }
     );
   }
@@ -71,7 +73,9 @@ export class QuestionsService {
     await this.dataSource.manager.save(answers);
     return await this.questionRepository.findOne({
       where: { id: questionId },
-      relations: ['answers']
+      relations: {
+        answers: true
+      }
     });
   }
 }
