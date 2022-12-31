@@ -20,7 +20,11 @@ export class QuestionsService {
   }
 
   async findAll() {
-    return await this.questionRepository.find();
+    return await this.questionRepository.find(
+      {
+        relations: ['answers']
+      }
+    );
   }
 
   async findOne(id: number) {
