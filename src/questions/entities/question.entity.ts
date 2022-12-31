@@ -15,6 +15,6 @@ export class Question {
   @Column({type: 'bigint', nullable: true})
   score: number;
 
-  @OneToMany(() => Answer, answer => answer.questionId)
+  @OneToMany(() => Answer, answer => answer.relatedQuestion)
   answers: Answer[];
 }
