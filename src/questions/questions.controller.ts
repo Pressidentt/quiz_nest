@@ -23,8 +23,8 @@ export class QuestionsController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateQuestionDto: UpdateQuestionDto) {
-    return await this.questionsService.update(+id, updateQuestionDto);
+  async update(@Param('id') id: string, @Body() data: any) {
+    return await this.questionsService.update(+id, data);
   }
 
   @Delete(':id')

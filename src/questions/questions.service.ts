@@ -35,14 +35,43 @@ export class QuestionsService {
     });
   }
 
-  async update(id: number, updateQuestionDto: UpdateQuestionDto) {
+  async update(id: number, data: any) {
     const question = await this.questionRepository.findOne({
       where: { id },
+      relations: {
+        answers: true
+      }
     });
+    question.text = data.text;
+    question.feedback = data.feedback;
+    question.score = data.score;
 
-    question.text = updateQuestionDto.text;
-    return await this.questionRepository.save(question);
+    for (let i = 0; i < question.answers.length; i++) {
+      await this.answerRepository.remove(question.answers[i]);
+    }
+    await this.questionRepository.save(question);
+
+    const questionId = id;
+    const answers: Answer[] = []
+    const answersFromUser = data.answers;
+    for (let i = 0; i < answersFromUser.length; i++) {
+      answers.push(
+        this.answerRepository.create({
+          text: data.answers[i].text,
+          isCorrect: data.answers[i].isCorrect,
+          questionId: questionId
+        })
+      );
+    }
+    await this.dataSource.manager.save(answers);
+    return await this.questionRepository.findOne({
+      where: { id: questionId },
+      relations: {
+        answers: true
+      }
+    });
   }
+
 
   async remove(id: number) {
     const question = await this.questionRepository.findOne({
