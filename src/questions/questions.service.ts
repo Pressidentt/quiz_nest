@@ -50,22 +50,28 @@ export class QuestionsService {
   }
 
   async questionMassInsert(data: any) {
-   let questionToSave = this.questionRepository.create({
-    text: data.text,
-   });  
-   await this.questionRepository.save(questionToSave);
-   const questionId = questionToSave.id; 
-   const answers: Answer[] = []
-   const answersFromUser = data.answers;
-   for(let i = 0; i< answersFromUser.length; i++){
-    answers.push(
-      this.answerRepository.create({
-      text: data.answers[i].text,
-      isCorrect: data.answers[i].isCorrect,
-      questionId: questionId
-      })
-    );
-   }
-   return await this.dataSource.manager.save(answers);
+    let questionToSave = this.questionRepository.create({
+      text: data.text,
+      feedback: data.feedback,
+      score: data.score
+    });
+    await this.questionRepository.save(questionToSave);
+    const questionId = questionToSave.id;
+    const answers: Answer[] = []
+    const answersFromUser = data.answers;
+    for (let i = 0; i < answersFromUser.length; i++) {
+      answers.push(
+        this.answerRepository.create({
+          text: data.answers[i].text,
+          isCorrect: data.answers[i].isCorrect,
+          questionId: questionId
+        })
+      );
+    }
+    await this.dataSource.manager.save(answers);
+    return await this.questionRepository.findOne({
+      where: { id: questionId },
+      relations: ['answers']
+    });
   }
 }
