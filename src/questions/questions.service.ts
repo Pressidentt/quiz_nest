@@ -1,32 +1,29 @@
-import { AnswersService } from './answers.service';
 import { Answer } from './entities/answer.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { CreateQuestionDto } from './dto/create-question.dto';
-import { UpdateQuestionDto } from './dto/update-question.dto';
 import { Question } from './entities/question.entity';
 
 @Injectable()
 export class QuestionsService {
   constructor(
-    @InjectRepository(Question) private questionRepository: Repository<Question>,
+    @InjectRepository(Question)
+    private questionRepository: Repository<Question>,
     @InjectRepository(Answer) private answerRepository: Repository<Answer>,
-    private readonly dataSource: DataSource
-  ) { }
+    private readonly dataSource: DataSource,
+  ) {}
 
   async create(createQuestionDto: CreateQuestionDto) {
     return await this.questionRepository.save(createQuestionDto);
   }
 
   async findAll() {
-    return await this.questionRepository.find(
-      {
-        relations: {
-          answers: true
-        }
-      }
-    );
+    return await this.questionRepository.find({
+      relations: {
+        answers: true,
+      },
+    });
   }
 
   async findOne(id: number) {
@@ -39,8 +36,8 @@ export class QuestionsService {
     const question = await this.questionRepository.findOne({
       where: { id },
       relations: {
-        answers: true
-      }
+        answers: true,
+      },
     });
     question.text = data.text;
     question.feedback = data.feedback;
@@ -52,33 +49,32 @@ export class QuestionsService {
     await this.questionRepository.save(question);
 
     const questionId = id;
-    const answers: Answer[] = []
+    const answers: Answer[] = [];
     const answersFromUser = data.answers;
     for (let i = 0; i < answersFromUser.length; i++) {
       answers.push(
         this.answerRepository.create({
           text: data.answers[i].text,
           isCorrect: data.answers[i].isCorrect,
-          questionId: questionId
-        })
+          questionId: questionId,
+        }),
       );
     }
     await this.dataSource.manager.save(answers);
     return await this.questionRepository.findOne({
       where: { id: questionId },
       relations: {
-        answers: true
-      }
+        answers: true,
+      },
     });
   }
-
 
   async remove(id: number) {
     const question = await this.questionRepository.findOne({
       where: { id },
       relations: {
-        answers: true
-      }
+        answers: true,
+      },
     });
     await this.answerRepository.remove(question.answers);
     return await this.questionRepository.remove(question);
@@ -88,27 +84,27 @@ export class QuestionsService {
     let questionToSave = this.questionRepository.create({
       text: data.text,
       feedback: data.feedback,
-      score: data.score
+      score: data.score,
     });
     await this.questionRepository.save(questionToSave);
     const questionId = questionToSave.id;
-    const answers: Answer[] = []
+    const answers: Answer[] = [];
     const answersFromUser = data.answers;
     for (let i = 0; i < answersFromUser.length; i++) {
       answers.push(
         this.answerRepository.create({
           text: data.answers[i].text,
           isCorrect: data.answers[i].isCorrect,
-          questionId: questionId
-        })
+          questionId: questionId,
+        }),
       );
     }
     await this.dataSource.manager.save(answers);
     return await this.questionRepository.findOne({
       where: { id: questionId },
       relations: {
-        answers: true
-      }
+        answers: true,
+      },
     });
   }
 }

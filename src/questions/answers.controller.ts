@@ -1,11 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { QuestionsService } from './questions.service';
-import { UpdateQuestionDto } from './dto/update-question.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CreateAnswerDto } from './dto/create-answer.dto';
 import { AnswersService } from './answers.service';
 
 @Controller('answers')
-export class AnswersController{
+export class AnswersController {
   constructor(private readonly answersService: AnswersService) {}
 
   @Post()
@@ -24,7 +30,10 @@ export class AnswersController{
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateQuestionDto: CreateAnswerDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateQuestionDto: CreateAnswerDto,
+  ) {
     return await this.answersService.update(+id, updateQuestionDto);
   }
 
@@ -32,5 +41,4 @@ export class AnswersController{
   async remove(@Param('id') id: string) {
     return await this.answersService.remove(+id);
   }
-
 }
