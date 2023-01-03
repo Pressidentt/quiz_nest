@@ -76,7 +76,11 @@ export class QuestionsService {
   async remove(id: number) {
     const question = await this.questionRepository.findOne({
       where: { id },
+      relations: {
+        answers: true
+      }
     });
+    await this.answerRepository.remove(question.answers);
     return await this.questionRepository.remove(question);
   }
 
