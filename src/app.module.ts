@@ -13,6 +13,12 @@ import { QuestionsModule } from './questions/questions.module';
       envFilePath: '.env',
     }),
     TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'mysql-azimka.alwaysdata.net', 
+      port: 3306,
+      username: 'azimka',
+      password: 'azimka_0308',
+      database: 'azimka_backendhw',
       entities: [Answer, Question],
       synchronize: true,
     }),],
